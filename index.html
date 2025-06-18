@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>مودات ماينكرافت الجوال</title>
+<style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f0f0f0;
+      color: #222;
+      transition: background-color 0.3s, color 0.3s;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    body.dark-mode {
+      background-color: #121212;
+      color: #eee;
+    }
+    header {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #2e7d32;
+  text-shadow: 1px 1px 2px #c8e6c9;
+  letter-spacing: 1px;
+}
+body.dark-mode header {
+  color: #a5d6a7;
+  text-shadow: 1px 1px 2px #1b5e20;
+}
+    .toggle-dark {
+      font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      cursor: pointer;
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: #2e7d32;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 5px;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      z-index: 999;
+    }
+    .toggle-dark:hover {
+      background-color: #1b4d20;
+    }
+    .mods-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .mod-card {
+  background: white;
+  width: 320px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mod-card:hover {
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+    body.dark-mode .mod-card {
+  background: #1e1e1e;
+  color: #eee;
+  width: 320px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mod-card:hover {
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+    .mod-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: filter 0.3s;
+    }
+    .mod-card:hover img {
+      filter: brightness(0.85);
+    }
+    .mod-content {
+      padding: 15px 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .mod-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #2e7d32;
+    }
+    body.dark-mode .mod-title {
+      color: #80c783;
+    }
+    .mod-description {
+      flex-grow: 1;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .mod-rating {
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #fbc02d;
+    }
+    .mod-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .mod-buttons a {
+      flex: 1;
+      text-align: center;
+      padding: 9px 0;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      color: white;
+      transition: background-color 0.3s;
+      user-select: none;
+      cursor: pointer;
+    }
+    .info-btn {
+      background-color: #1976d2;
+    }
+    .info-btn:hover {
+      background-color: #0d47a1;
+    }
+    .download-btn {
+      background-color: #388e3c;
+    }
+    .download-btn:hover {
+      background-color: #1b5e20;
+    }
+    .share-btn {
+      background-color: #f57c00;
+    }
+    .share-btn:hover {
+      background-color: #bb4d00;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .mods-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .mod-card {
+  background: white;
+  width: 320px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mod-card:hover {
+  transform: scale(1.05);
+  z-index: 2;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+      .mod-buttons {
+        flex-direction: column;
+      }
+      .mod-buttons a {
+        flex: none;
+        width: 100%;
+      }
+    }
+  
+.mod-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 1.5s ease-in-out infinite;
+  z-index: 5;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
+.mod-card {
+  position: relative;
+  overflow: hidden;
+}
+
+body {
+  background: linear-gradient(135deg, #e8f5e9, #ffffff);
+}
+
+body.dark-mode {
+  background: linear-gradient(135deg, #1e1e1e, #121212);
+}
+
+.mod-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.mod-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+header {
+  font-size: 3rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1b5e20;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+body.dark-mode header {
+  color: #a5d6a7;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+</style>
+<style>
+.mod-type-label {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff9800, #ff5722);
+  color: white;
+  padding: 6px 12px;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+body.dark-mode .mod-type-label {
+  background: linear-gradient(135deg, #ffcc80, #ff7043);
+  color: #212121;
+}
+#backToTop {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  background: #2e7d32;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+</style>
+<style>
+.filter-btn {
+  background: linear-gradient(135deg, #4caf50, #81c784);
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+.filter-btn:hover {
+  background: linear-gradient(135deg, #388e3c, #66bb6a);
+  transform: scale(1.05);
+}
+</style>
+<style>
+body {
+  background: linear-gradient(135deg, #f1f8e9, #ffffff, #e8f5e9);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+body.dark-mode {
+  background: linear-gradient(135deg, #121212, #1e1e1e, #2c2c2c);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+</style><style>
+header {
+  animation: glowHeader 3s ease-in-out infinite alternate;
+}
+@keyframes glowHeader {
+  from {
+    text-shadow: 0 0 5px #66bb6a, 0 0 10px #81c784, 0 0 15px #66bb6a;
+  }
+  to {
+    text-shadow: 0 0 20px #1b5e20, 0 0 30px #66bb6a, 0 0 40px #2e7d32;
+  }
+}
+</style></head>
+<body>
+<button class="toggle-dark" id="modeToggle" onclick="toggleDarkMode()">🌙 الوضع الداكن</button>
+<header>Gentax Addon</header>
+<div style="text-align: center; margin-top: -15px; margin-bottom: 20px;">
+<a href="https://www.youtube.com/@ArabWebTools" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.08)'" style="
+     display: inline-block;
+     padding: 6px 14px;
+     background: linear-gradient(135deg, #ff0000, #d50000);
+     color: white;
+     font-weight: bold;
+     font-size: 0.9rem;
+     border-radius: 20px;
+     text-decoration: none;
+     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+     transition: transform 0.3s;
+  " target="_blank">
+    📺 اشترك في القناة
+  </a>
+</div>
+
+<main>
+<div style="text-align: center; margin-bottom: 20px;">
+<button onclick="sortByDownloads()" onmouseout="this.style.opacity='1'" onmouseover="this.style.opacity='0.9'" style="background: linear-gradient(135deg, #2e7d32, #66bb6a); color: white; padding: 12px 26px; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.3s;">
+    🔥 عرض المودات الرائجة
+  </button>
+</div>
+<div id="filter-section" style="text-align: center; margin: 30px 0;">
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+<button class="filter-btn" data-filter="all">📋 الكل</button>
+<button class="filter-btn" data-filter="👹 الوحوش">👹 الوحوش</button>
+<button class="filter-btn" data-filter="💡 التقنية">💡 التقنية</button>
+<button class="filter-btn" data-filter="🏠 المباني">🏠 المباني</button>
+<button class="filter-btn" data-filter="🌳 البيئة">🌳 البيئة</button>
+<button class="filter-btn" data-filter="💰 التبادل">💰 التبادل</button>
+<button class="filter-btn" data-filter="🎯 التدريب">🎯 التدريب</button>
+<button class="filter-btn" data-filter="🧭 الواجهة">🧭 الواجهة</button>
+<button class="filter-btn" data-filter="💣 المتفجرات">💣 المتفجرات</button>
+<button class="filter-btn" data-filter="🏕️ البقاء">🏕️ البقاء</button>
+</div>
+</div>
+<div class="mods-container"><div class="mod-card" data-type="👹 الوحوش">
+<img alt="إضافة زعماء أقوياء لماينكرافت الجوال!" src="https://i.postimg.cc/FKXFDQry/Arab-Web-Tools-sddefault-1747224339.jpg"/>
+<div class="mod-content">
+<div class="mod-title">إضافة زعماء أقوياء لماينكرافت الجوال!</div>
+<div class="mod-description">مود يضيف زعماء أقوياء ومعارك مثيرة لعشاق التحدي على الجوال.</div>
+<div class="mod-rating">⭐ 4.9 (509 تنزيل)</div>
+<div class="mod-type-label">👹 الوحوش</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/MTlVy" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/MTlVy');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="🏕️ البقاء">
+<img alt="مود towers and gungeons" src="https://i.postimg.cc/prvZch9k/maxresdefault-1747885311.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود towers and gungeons</div>
+<div class="mod-description">مود يضيف اماكن مهجورة للاستكشاف تحتوي على ايتمات اسطورية ولكن احذر فليس الحصول عليها بالامر السهل!.</div>
+<div class="mod-rating">⭐ 4.0 (321 تنزيل)</div>
+<div class="mod-type-label">🏕️ البقاء</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/eAdeqOa">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/eAdeqOa');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="مود اضافة الحقائب المميزة مجانا!" src="https://i.postimg.cc/dQghP9XD/maxresdefault-1747954824.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود اضافة الحقائب المميزة مجانا!</div>
+<div class="mod-description">مود يضيف حقائب احترافية التصميم للعبة مما يسهل حمل اشياء اكثر.</div>
+<div class="mod-rating">⭐ 4.1 (37 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/nyJvwi5c" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/nyJvwi5c');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="💡 التقنية">
+<img alt="Carry More" src="https://www2.0zz0.com/2025/05/14/12/443712809.jpg"/>
+<div class="mod-content">
+<div class="mod-title">Carry More</div>
+<div class="mod-description">تعديل يسمح لك بحمل المزيد من العناصر وزيادة المساحة.</div>
+<div class="mod-rating">⭐ 4.2 (112 تنزيل)</div>
+<div class="mod-type-label">💡 التقنية</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/GVABZNR" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/GVABZNR');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="💡 التقنية">
+<img alt="jade mod" src="https://i.postimg.cc/jdWX4Rn9/sddefault-1747870776.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود jade</div>
+<div class="mod-description">تعديل يسمح لك بمعرفة العناصر التي تشير اليها.</div>
+<div class="mod-rating">⭐ 4.5 (180 تنزيل)</div>
+<div class="mod-type-label">💡 التقنية</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/9a7KQcGp" onclick="loadingEffect(this)">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/9a7KQcGp');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="Astra PvP Bedrock" src="https://i.postimg.cc/50Tgvj3q/maxresdefault-1747860510.jpg"/>
+<div class="mod-content">
+<div class="mod-title">Astra PvP Bedrock</div>
+<div class="mod-description">مود يضيف عناصر PvP احترافية مخصصة للبيدروك</div>
+<div class="mod-rating">⭐ 4.8 (420 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/COEZ" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/COEZ');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="nomadic mod" src="https://i.postimg.cc/BQBhh1w8/maxresdefault-1750210776.jpg"/>
+<div class="mod-content">
+<div class="mod-title">nomadic mod</div>
+<div class="mod-description">هذا المود مود رائع لجغل ماينكرافت اكثر جاذبية!</div>
+<div class="mod-rating">⭐ 4.6 (422 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/COEZ" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/COEZ');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="👹 الوحوش">
+<img alt="وحوش ضخمة لماينكرافت البيدروك!" src="https://i.postimg.cc/fR40nm2h/maxresdefault-1747861199.jpg"/>
+<div class="mod-content">
+<div class="mod-title">وحوش ضخمة لماينكرافت البيدروك!</div>
+<div class="mod-description">يضيف وحوش ضخمة ومخيفة لتحدي اللاعبين في عالم البيدروك.</div>
+<div class="mod-rating">⭐ 4.3 (240 تنزيل)</div>
+<div class="mod-type-label">👹 الوحوش</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/6B6A" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/6B6A');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="🌳 البيئة">
+<img alt="إضافة حيوانات مما يضيف لمسة طبيعية خلابة!" src="https://i.postimg.cc/4yDJ86P0/Arab-Web-Tools-sddefault-1747224140.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود الطبيعة والحيوانات للجوال</div>
+<div class="mod-description">إضافة حيوانات مما يضيف لمسة طبيعية خلابة!.</div>
+<div class="mod-rating">⭐ 4.4 (59 تنزيل)</div>
+<div class="mod-type-label">🌳 البيئة</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/6woGHe9s" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/6woGHe9s');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="👹 الوحوش">
+<img alt="وحوش ضخمة لماينكرافت البيدروك!" src="https://i.postimg.cc/fLj73k1P/Arab-Web-Tools-sddefault-1747223068.jpg"/>
+<div class="mod-content">
+<div class="mod-title">تغيير اللعبة الى نظام اكثر تطورا وجمالا!</div>
+<div class="mod-description">يضيف وحوش ضخمة ومخيفة لتحدي اللاعبين في عالم البيدروك.</div>
+<div class="mod-rating">⭐ 4.7 (380 تنزيل)</div>
+<div class="mod-type-label">👹 الوحوش</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/ZQXUlM" onclick="loadingEffect(this)" rel="noopener noreferrer">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/6B6A');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="👹 الوحوش">
+<img alt="مود يضيف القدرة على التحول الى كائن قوي وخلاب ولمته ليس لطيفا!" src="https://i.postimg.cc/MpM2dQ21/maxresdefault-1747923702.jpg"/>
+<div class="mod-content">
+<div class="mod-title">fur craft addone</div>
+<div class="mod-description">مود يضيف القدرة على التحول الى كائن قوي وخلاب ولمته ليس لطيفا.</div>
+<div class="mod-rating">⭐ 4.6 (21 تنزيل)</div>
+<div class="mod-type-label">👹 الوحوش</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/iqhX" onclick="loadingEffect(this)">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/iqhX');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="🏠 المباني">
+<img alt="مباني رائعة!" src="https://i.postimg.cc/NFJz9LXf/Arab-Web-Tools-sddefault-1747224240.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود بنايات احترافية جاهزة لعالمك!</div>
+<div class="mod-description">مود يضيف بنايات احترافية جاهزة</div>
+<div class="mod-rating">⭐ 4.8 (122 تنزيل)</div>
+<div class="mod-type-label">🏠 المباني</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/vr65" onclick="loadingEffect(this)">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/COEZ');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="مود الديناصورات" src="https://i.postimg.cc/Hkqb2518/maxresdefault-1747870389.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود الديناصورات</div>
+<div class="mod-description">مود يضيف اجواء حماسية للعبة من خلال اضافة ديناصورات</div>
+<div class="mod-rating">⭐ 4.5 (85 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/ZBA3dg">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/ZBA3dg');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="مود القطارات" src="https://i.postimg.cc/CKfsFHkm/Arab-Web-Tools-maxresdefault-1747223791.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود القطارات</div>
+<div class="mod-description">مود يضيف قطارات للعبة مما يضيف بعض المرح والابتكار</div>
+<div class="mod-rating">⭐ 4.1 (153 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/BLahAEP">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/BLahAEP');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="مود التحول للابطال الخارقين" src="https://i.postimg.cc/6qCCFpV5/maxresdefault-1747871644.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود الابطال الخارقين</div>
+<div class="mod-description">مود يمكنك من التحول الى اي بطل تحلم به!.</div>
+<div class="mod-rating">⭐ 4.3 (188 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/qx5E" onclick="loadingEffect(this)">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/qx5E');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="🏠 المباني">
+<img alt="منازل قابلة للبناء" src="https://i.postimg.cc/TPJQ5pMM/Arab-Web-Tools-maxresdefault-1747223667.jpg"/>
+<div class="mod-content">
+<div class="mod-title">منازل قابلة للبناء</div>
+<div class="mod-description">مود يمكنك من بناء منازل بسرعة وسهولة داخل اللعبة.</div>
+<div class="mod-rating">⭐ 4.7 (71 تنزيل)</div>
+<div class="mod-type-label">🏠 المباني</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/vr65" onclick="loadingEffect(this)">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/vr65');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="🏠 المباني">
+<img alt="مود القرى السماوية" src="https://i.postimg.cc/BbRzvQtK/maxresdefault-1747884861.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود القلاع السماوية</div>
+<div class="mod-description">مود يضيف قرى سحابية وسط الغيوم للايتكشاف ولكن احر فبعضها خطيرة!.</div>
+<div class="mod-rating">⭐ 4.8 (215 تنزيل)</div>
+<div class="mod-type-label">🏠 المباني</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/GZ1D">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/GZ1D');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="👹 الوحوش">
+<img alt="مود جوجيتسو كايسن للجوال!" src="https://i.postimg.cc/tJzYhZtP/maxresdefault-1747872077.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود جوجيتسو كايسن للجوال!</div>
+<div class="mod-description">مود يضيف شخصيات عالم جوجيتسوا وانت يمكنك ان تكون منهم ومعارك مثيرة لعشاق التحدي على الجوال.</div>
+<div class="mod-rating">⭐ 4.9 (500 تنزيل)</div>
+<div class="mod-type-label">👹 الوحوش</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/o5rIUT6n" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/o5rIUT6n');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="مود اضافات سونيك!" src="https://i.postimg.cc/7ZJ27PhL/Arab-Web-Tools-maxresdefault-1747223986.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود اضافات سونيك!</div>
+<div class="mod-description">مود يضيف جميع شخصيات سونيك التي يمكنك التحول اليها!.</div>
+<div class="mod-rating">⭐ 4.9 (328 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/MBL1t0">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/MBL1t0');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="💡 التقنية">
+<img alt="شادر للكمبيوتر نسخة الجوال" src="https://i.postimg.cc/fTG4z50r/maxresdefault-1747884573.jpg"/>
+<div class="mod-content">
+<div class="mod-title">شادر للكمبيوتر نسخة الجوال</div>
+<div class="mod-description">شادر يحسن من مظهر وجمالية اللعبة.</div>
+<div class="mod-rating">⭐ 4.9 (56 تنزيل)</div>
+<div class="mod-type-label">💡 التقنية</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/Dotvm" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/Dotvm');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="📦 أخرى">
+<img alt="مود تقطيع الاشجار للجوال مجانا!" src="https://i.postimg.cc/8CV1tK7g/maxresdefault-1747957381.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود تقطيع الاشجار للجوال مجانا!</div>
+<div class="mod-description">هذا المود يمكنك من تقطيع الاشجار بطريقة افضل حيث يمكنك تقطيعها من بلوكة واحده.</div>
+<div class="mod-rating">⭐ 4.2 (33 تنزيل)</div>
+<div class="mod-type-label">📦 أخرى</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/wGDq" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/wGDq');return false;">مشاركة</a>
+</div>
+</div>
+</div><div class="mod-card" data-type="🏕️ البقاء">
+<img alt="" src="https://i.postimg.cc/JhnWTfRg/maxresdefault-1747957999.jpg"/>
+<div class="mod-content">
+<div class="mod-title">مود sleeping bugs</div>
+<div class="mod-description">هذا المود يضيف اسرة خفيفة للتخييم وتمكنك من التحكم في عدد الايام التي ستنامها او الوقت الذي تستيقظ فيه</div>
+<div class="mod-rating">⭐ 4.8 (26 تنزيل)</div>
+<div class="mod-type-label">🏕️ البقاء</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/ZfMJOgW6" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/ZfMJOgW6');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="🌳 البيئة">
+<img alt="apple plus" src="https://i.postimg.cc/HkmBjygY/maxresdefault-1750159407.jpg"/>
+<div class="mod-content">
+<div class="mod-title">apple plus</div>
+<div class="mod-description">مود apple plus يضيف عناصر جديدة وشجر تفاح وميزات بيئية ممتعة!</div>
+<div class="mod-rating">⭐ 3.6 (517 تنزيل)</div>
+<div class="mod-type-label">🌳 البيئة</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/TF4p" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/TF4p');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="💰 التبادل">
+<img alt="goblin trade" src="https://i.postimg.cc/WzMYf6vy/maxresdefault-1750160740.jpg"/>
+<div class="mod-content">
+<div class="mod-title">goblin trade</div>
+<div class="mod-description">يضيف هذا المود الغوبلن التاجر الذي يمكنك التبادل معه للحصول على موارد نادرة مقابل عناصر خاصة.</div>
+<div class="mod-rating">⭐ 4.6 (35 تنزيل)</div>
+<div class="mod-type-label">💰 التبادل</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/ffHyvSn" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/ffHyvSn');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="💡 التقنية">
+<img alt="target aim" src="https://i.postimg.cc/6pTL8LPN/d9f4ccf3808-mcbuild.webp"/>
+<div class="mod-content">
+<div class="mod-title">target aim</div>
+<div class="mod-description">هذا المود يضيف أهداف تصويب قابلة للتخصيص تساعدك على تطوير مهاراتك في الرماية والتدريب داخل اللعبة.</div>
+<div class="mod-rating">⭐ 4.4 (742 تنزيل)</div>
+<div class="mod-type-label">💡 التقنية</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/dkSU5qAc" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/dkSU5qAc');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="🧭 الواجهة">
+<img alt="minimap" src="https://i.postimg.cc/sxX1TK7j/maxresdefault-1750161051.jpg"/>
+<div class="mod-content">
+<div class="mod-title">minimap</div>
+<div class="mod-description">يضيف مود minimap خريطة مصغرة تفاعلية على الشاشة تساعدك في التنقل واستكشاف العالم بسهولة أكبر.</div>
+<div class="mod-rating">⭐ 3.7 (570 تنزيل)</div>
+<div class="mod-type-label">🧭 الواجهة</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/jDjH1y" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/jDjH1y');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="💣 المتفجرات">
+<img alt="more tnt" src="https://i.postimg.cc/QMzXXsT3/maxresdefault-1750161193.jpg"/>
+<div class="mod-content">
+<div class="mod-title">more tnt</div>
+<div class="mod-description">يضيف مود more tnt أنواعًا متعددة من الـ TNT ذات تأثيرات مدمرة ومبتكرة لتجربة تفجير أكثر إثارة.</div>
+<div class="mod-rating">⭐ 4.2 (100 تنزيل)</div>
+<div class="mod-type-label">💣 المتفجرات</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/nTDHN1" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/nTDHN1');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="👹 الوحوش">
+<img alt="health bars" src="https://i.postimg.cc/bY3mdJvk/maxresdefault-1750161436.jpg"/>
+<div class="mod-content">
+<div class="mod-title">health bars</div>
+<div class="mod-description">يعرض هذا المود شريط صحة فوق كل كائن في اللعبة، مما يتيح لك معرفة مقدار الضرر المتبقي بسهولة.</div>
+<div class="mod-rating">⭐ 4.4 (402 تنزيل)</div>
+<div class="mod-type-label">👹 الوحوش</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/yGX12C" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/yGX12C');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="🏕️ البقاء">
+<img alt="حقائب التخييم" src="https://i.postimg.cc/SKgrTSvc/maxresdefault-1750161651.jpg"/>
+<div class="mod-content">
+<div class="mod-title">حقائب التخييم</div>
+<div class="mod-description">يضيف هذا المود حقائب تخييم مميزة لتخزين الأدوات بسهولة أثناء الاستكشاف والسفر، مع تصاميم تناسب أجواء البرية.</div>
+<div class="mod-rating">⭐ 4.3 (245 تنزيل)</div>
+<div class="mod-type-label">🏕️ البقاء</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/0SIZAy4" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/0SIZAy4');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="🏕️ البقاء">
+<img alt="mod more custom block" src="https://i.postimg.cc/6QyY5b6R/maxresdefault-1750211152.jpg"/>
+<div class="mod-content">
+<div class="mod-title">moge more custom block</div>
+<div class="mod-description">يضيف هذا المود يضيف المزيد من الاشياء والمعدات لجعل تجربة اللعبة افضل.</div>
+<div class="mod-rating">⭐ 4.3 (266 تنزيل)</div>
+<div class="mod-type-label">🏕️ البقاء</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/OQdebuP" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/OQdebuP');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+<div class="mod-card" data-type="🏕️ البقاء">
+<img alt="mod luner moon" src="https://i.postimg.cc/VLf9kZD6/maxresdefault-1750211826.jpg"/>
+<div class="mod-content">
+<div class="mod-title">mod luner moon</div>
+<div class="mod-description">هذا المود ليس لذوي القلوب الضعيفة!.</div>
+<div class="mod-rating">⭐ 5.0 (657 تنزيل)</div>
+<div class="mod-type-label">🏕️ البقاء</div><div class="mod-buttons">
+<a class="download-btn" href="https://swiftlnx.com/UDgC" onclick="loadingEffect(this)" rel="noopener noreferrer" target="_blank">تحميل المود</a>
+<a class="share-btn" href="#" onclick="shareLink('https://swiftlnx.com/UDgC');return false;">مشاركة</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+    // وضع النهار والليل
+    function toggleDarkMode() {
+      const btn = document.getElementById('modeToggle');
+      document.body.classList.toggle('dark-mode');
+      // حفظ الاختيار في التخزين المحلي
+      if(document.body.classList.contains('dark-mode')){
+        localStorage.setItem('darkMode', 'true');
+      btn.textContent = '🌞 الوضع النهاري';
+      } else {
+        localStorage.removeItem('darkMode');
+      btn.textContent = '🌙 الوضع الداكن';
+      }
+    }
+    // تحميل الحالة عند فتح الصفحة
+    window.onload = function(){
+      const btn = document.getElementById('modeToggle');
+      if(localStorage.getItem('darkMode') === 'true'){
+        document.body.classList.add('dark-mode');
+        btn.textContent = '🌞 الوضع النهاري';
+      }
+    }
+
+    // تأثير تحميل عند الضغط على زر تحميل
+    function loadingEffect(btn) {
+      btn.textContent = 'جاري التحميل...';
+      btn.style.pointerEvents = 'none';
+      setTimeout(() => {
+        btn.textContent = 'تحميل المود';
+        btn.style.pointerEvents = 'auto';
+      }, 3000);
+    }
+
+    // وظيفة المشاركة (نسخ الرابط)
+    function shareLink(url) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          alert('تم نسخ رابط التحميل إلى الحافظة!');
+        }, () => {
+          alert('فشل نسخ الرابط، الرجاء نسخه يدويًا.');
+        });
+      } else {
+        prompt('انسخ رابط التحميل:', url);
+      }
+    }
+  
+function sortByDownloads() {
+  const container = document.querySelector('.mods-container');
+  const cards = Array.from(container.querySelectorAll('.mod-card'));
+
+  cards.sort((a, b) => {
+    const aText = a.querySelector('.mod-rating')?.textContent || '';
+    const bText = b.querySelector('.mod-rating')?.textContent || '';
+    const aDownloads = parseInt(aText.match(/\((\d+)/)?.[1] || 0);
+    const bDownloads = parseInt(bText.match(/\((\d+)/)?.[1] || 0);
+    return bDownloads - aDownloads;
+  });
+
+  cards.forEach(card => container.appendChild(card));
+}
+
+
+setInterval(() => {
+  const cards = document.querySelectorAll('.mod-card');
+  cards.forEach((card, i) => {
+    setTimeout(() => {
+      card.classList.add('shimmer');
+      setTimeout(() => card.classList.remove('shimmer'), 1000);
+    }, i * 200); // stagger effect for clarity
+  });
+}, 10000);
+</script>
+<button onclick="window.scrollTo({ top: 0, behavior: 'smooth' });" style="position: fixed; bottom: 80px; right: 20px; background: #2e7d32; color: white; padding: 10px 16px;
+         border: none; border-radius: 50px; font-size: 18px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+  ↑
+</button>
+<script>
+window.addEventListener('scroll', function() {
+  const btn = document.getElementById('backToTop');
+  if (window.scrollY > 400) {
+    btn.style.display = 'block';
+  } else {
+    btn.style.display = 'none';
+  }
+});
+</script>
+<script>
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const filter = btn.getAttribute('data-filter');
+    document.querySelectorAll('.mod-card').forEach(card => {
+      if (filter === 'all' || card.getAttribute('data-type') === filter) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+</body>
+<!-- صندوق الفيديو المضمن -->
+<div id="video-box" style="position: fixed; bottom: 20px; right: 20px; width: 300px; height: 170px; z-index: 999;">
+<div style="position: relative; width: 100%; height: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+<!-- iframe للفيديو -->
+<iframe allowfullscreen="" frameborder="0" src="https://files.catbox.moe/gvf4f1.mp4" style="width: 100%; height: 100%; display: block; border-radius: 12px;">
+</iframe>
+<!-- عنوان -->
+<div style="position: absolute; top: 0; left: 0; width: 100%; padding: 8px 10px; background: rgba(0, 0, 0, 0.5); color: white; font-weight: bold; text-align: center; font-size: 14px;">
+      طريقة تحميل المودات
+    </div>
+<!-- زر الإغلاق -->
+<button onclick="document.getElementById('video-box').remove(); document.getElementById('show-video-btn').style.display = 'none';" style="position: absolute; top: 5px; right: 5px; background: #ff4d4d; border: none; color: white; border-radius: 50%; width: 24px; height: 24px; font-size: 14px; cursor: pointer;">
+      ×
+    </button>
+<!-- زر الإخفاء -->
+<button onclick="document.getElementById('video-box').style.display = 'none'; document.getElementById('show-video-btn').style.display = 'block';" style="position: absolute; top: 5px; left: 5px; background: #ffaa00; border: none; color: white; border-radius: 50%; width: 24px; height: 24px; font-size: 14px; cursor: pointer;">
+      −
+    </button>
+</div>
+</div>
+<!-- زر إظهار الفيديو مجددًا -->
+<button id="show-video-btn" onclick="document.getElementById('video-box').style.display = 'block'; this.style.display = 'none';" style="display: none; position: fixed; bottom: 20px; left: 20px; z-index: 1000; background: #4caf50; color: white; padding: 8px 14px; border: none; border-radius: 8px; cursor: pointer;">
+  📺 إظهار الفيديو
+</button>
+</html>
+<style>
+body.dark-mode .mod-description { color: #ccc; }
+</style>
